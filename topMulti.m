@@ -1,4 +1,4 @@
-function [cO,xdensO,xcosO,xsinO,xcubO]=topMulti(nelx,nely,volfrac,initialDesign)
+function [cO,xdensO,xcosO,xsinO,xcubO]=topMulti(nelx,nely,volfrac,initialDesign,problem)
 % USER-DEFINED MODEL PARAMETERS
 %nelx : number of cells in horizontal direction
 %nely : number of cells in vertical direction
@@ -21,19 +21,42 @@ database=dbMat;
 maxloopaftermin=5; % Maximum number of iterations without a new global minimum
 maxloop=100; % Maximum number of iterations
 tolx = 0.001; % Terminarion criterion
-% USER-DEFINED LOAD DOFs
-loadnid = 1; % Node IDs
-loaddof = 2*loadnid(:) ; % DOFs
-% USER-DEFINED SUPPORT FIXED DOFs
-fixednid_1 = 1:(nely+1); % Node IDs
-fixednid_2 = (nelx+1)*(nely+1); % Node IDs
-fixeddof = [2*fixednid_1(:)-1;2*fixednid_2(:)]; % DOFs
+
+switch problem
+    case 'MBB'
+    % USER-DEFINED LOAD DOFs
+    loadnid = 1; % Node IDs
+    loaddof = 2*loadnid(:) ; % DOFs
+    % USER-DEFINED SUPPORT FIXED DOFs
+    fixednid_1 = 1:(nely+1); % Node IDs
+    fixednid_2 = (nelx+1)*(nely+1); % Node IDs
+    fixeddof = [2*fixednid_1(:)-1;2*fixednid_2(:)]; % DOFs
+    % USER-DEFINED ACTIVE ELEMENTS
+    activeelts=ones(nelx*nely,1);
+    case 'Lshape'
+    % USER-DEFINED LOAD DOFs
+    loadnid = nelx*(nely+1)+nely/2+1; % Node IDs
+    loaddof = 2*loadnid(:) ; % DOFs
+    % USER-DEFINED SUPPORT FIXED DOFs
+    fixednid_1 = 1:(nely+1):(nelx/2)*(nely+1)+1; % Node IDs
+    fixednid_2 = fixednid_1; % Node IDs
+    fixeddof = [2*fixednid_1(:)-1;2*fixednid_2(:)]; % DOFs
+    % USER-DEFINED ACTIVE ELEMENTS
+    emptyelts=(nelx/2)*(nely)+1:(nelx)*(nely);
+    emptyelts=reshape(emptyelts, nely,nelx/2);
+    emptyelts=emptyelts(1:nely/2,:);
+    emptyelts=emptyelts(:);
+    activeelts=ones(nelx*nely,1);
+    activeelts(emptyelts)=0;
+end
+
 % PREPARE FINITE ELEMENT ANALYSIS
 nele = nelx*nely;
 ndof = 2*(nelx+1)*(nely+1);
 F = sparse(loaddof,1,-fsum,ndof,1);
 U = zeros(ndof,1);
 freedofs = setdiff(1:ndof,fixeddof);
+volfrac=volfrac*mean(activeelts);
 
 nodenrs = reshape(1:(nely+1)*(nelx+1),nely+1,nelx+1);
 edofVec = reshape(2*nodenrs(1:end-1,1:end-1)+1,nelx*nely,1);
@@ -66,9 +89,14 @@ Hs = sum(H,2);
 
 % INITIALIZE ITERATION
 if initialDesign=="top88"
-    xdens = top88Design(nelx,nely,volfrac,2,1.5); xcos = repmat(0.75, [nely, nelx]); xsin = repmat(0.75, [nely, nelx]); xcub = repmat(0.5, [nely, nelx]);
+    switch problem
+        case 'MBB'
+        xdens = top88DesignMBB(nelx,nely,volfrac,2,1.2,2); xcos = repmat(1, [nely, nelx]); xsin = repmat(1, [nely, nelx]); xcub = repmat(0.5, [nely, nelx]);
+        case 'Lshape'
+        xdens = top88DesignL(nelx,nely,volfrac/mean(activeelts),2,1.2,2); xcos = repmat(1, [nely, nelx]); xsin = repmat(1, [nely, nelx]); xcub = repmat(0.5, [nely, nelx]);
+    end
 elseif initialDesign=="volfrac"
-    xdens = repmat(volfrac, [nely, nelx]); xcos = repmat(0.75, [nely, nelx]); xsin = repmat(0.75, [nely, nelx]); xcub = repmat(0.5, [nely, nelx]);
+    xdens = repmat(volfrac, [nely, nelx]); xcos = repmat(1, [nely, nelx]); xsin = repmat(1, [nely, nelx]); xcub = repmat(0.5, [nely, nelx]);
 end
 xdensPhys = xdens; xcosPhys = xcos; xsinPhys = xsin; xcubPhys = xcub;
 loop = 0; change = 1; loopaftermin=0;
@@ -135,9 +163,9 @@ while change > tolx && loop < maxloop && loopaftermin < maxloopaftermin
     dc_xdens(:) = H*(xdens(:).*dc_xdens(:))./Hs./max(1e-4,xdens(:));
     
     % MMA OPTIMIZATION METHOD
-    f0val = c; df0dx = [dc_xdens(:); dc_xcos(:); dc_xsin(:); dc_xcub(:)];
+    f0val = c; df0dx = [dc_xdens(:).*activeelts; dc_xcos(:).*activeelts; dc_xsin(:).*activeelts; dc_xcub(:).*activeelts];
     fval = sum(xdensPhys(:))/(volfrac*nele) - 1;
-    dfdx = [dv_x(:)'/(volfrac*nele), zeros(1,nele), zeros(1,nele), zeros(1,nele)];
+    dfdx = [(dv_x(:).*activeelts)'/(volfrac*nele), zeros(1,nele), zeros(1,nele), zeros(1,nele)];
     [xmma,~,~,~,~,~,~,~,~,low,upp] = ...
         mmasub(m,n,loop,xval,xmin,xmax,xold1,xold2, ...
         f0val,df0dx,fval,dfdx,low,upp,a0,a_mma,c_mma,d_mma);
@@ -147,6 +175,7 @@ while change > tolx && loop < maxloop && loopaftermin < maxloopaftermin
     xsinnew = reshape(xval(2*nele+1:3*nele), nely, nelx);
     xcubnew = reshape(xval(3*nele+1:4*nele), nely, nelx);
     % FILTERING AND MODIFICATION OF VARIABLES
+    xdensnew(:) = xdensnew(:).*activeelts;
     xcosnew(:) = (H*xcosnew(:))./Hs; xcosnew(xcosnew > 1.0) = 1.0;
     xsinnew(:) = (H*xsinnew(:))./Hs; xsinnew(xsinnew > 1.0) = 1.0;
     xcubnew(:) = H*(xcubnew(:)./Hs); xcubnew(xcubnew > 1.0) = 1.0;

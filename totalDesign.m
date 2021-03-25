@@ -1,4 +1,4 @@
-function [totalMat]=totalDesign(xdens,xcos,xsin,xcub,nelx,nely,totvolfrac,posttreat)
+function [totalMat]=totalDesign(xdens,xcos,xsin,xcub,nelx,nely,totvolfrac,posttreat,problem)
 % totvolfrac : total volume fraction
 % nelx : number of cells in horizontal direction
 % nely : number of cells in vertical direction
@@ -105,21 +105,37 @@ for i = 1:nely
         totalMat(microy*(i-1)+1:microy*i,microx*(j-1)+1:microx*j)=localCell;
     end
 end
-
 if posttreat==1;
-    totalMat=posttreatment(totalMat,nelx*microx,nely*microy,totvolfrac)
+    totalMat=posttreatment(totalMat,nelx*microx,nely*microy,totvolfrac,problem);
 end
 end
 
-function totalMat01=posttreatment(totalMat,nelxm,nelym,totvolfrac)
-rmin=8; %post treatment filter radius
-unusedRatio=1.2; %when the stress in an element is lower than the mean stress divided by that factor, it is considered as unused.
-unusedRatio2=5; %different factor used in a secound "stress filter"
+function totalMat01=posttreatment(totalMat,nelxm,nelym,totvolfrac,problem)
+rmin=4; %post treatment filter radius
+unusedRatio=1.1; %when the stress in an element is lower than the mean stress divided by that factor, it is considered as unused.
+unusedRatio2=2; %different factor used in a secound "stress filter"
+unusedRatio3=20; %different factor used in a third "stress filter"
 %nelxm : total number of elements in horizontal direction
 %nelym : total number of elements in vertical direction
 
+switch problem
+    case 'MBB'
+    % USER-DEFINED ACTIVE ELEMENTS
+    activeelts=ones(nelxm*nelym,1);
+    case 'Lshape'
+    % USER-DEFINED ACTIVE ELEMENTS
+    emptyelts=(nelxm/2)*(nelym)+1:(nelxm)*(nelym);
+    emptyelts=reshape(emptyelts, nelym,nelxm/2);
+    emptyelts=emptyelts(1:nelym/2,:);
+    emptyelts=emptyelts(:);
+    activeelts=ones(nelxm*nelym,1);
+    activeelts(emptyelts)=0;
+    totvolfrac=totvolfrac*3/4;
+end
+
 %%POST TREATMENT
 %REMOVE "UNUSED" ELEMENTS
+fprintf('Post-treatment : step 1 \n');
 %group cells 4 by 4 to evaluate the stress on a coarser grid
 topleftmat= totalMat(1:2:end,1:2:end);
 toprightmat= totalMat(1:2:end,2:2:end);
@@ -127,7 +143,7 @@ botleftmat= totalMat(2:2:end,1:2:end);
 botrightmat= totalMat(2:2:end,2:2:end);
 halftotmat=(topleftmat+toprightmat+botleftmat+botrightmat)./4;
 
-[stress]=totalFEM_S_MBB(nelxm/2,nelym/2,halftotmat); % evaluate stress
+[stress]=totalFEM_S(nelxm/2,nelym/2,halftotmat,problem); % evaluate stress
 stressTotMat=abs(stress).*halftotmat;
 meanSTM=mean(mean(stressTotMat)); %mean stress
 totalMat(repelem(stressTotMat<meanSTM/unusedRatio,2,2))=0; %eliminate "unused" elements from the total design matrix
@@ -138,12 +154,24 @@ toprightmat= totalMat(1:2:end,2:2:end);
 botleftmat= totalMat(2:2:end,1:2:end);
 botrightmat= totalMat(2:2:end,2:2:end);
 halftotmat=(topleftmat+toprightmat+botleftmat+botrightmat)./4;  
-[stress]=totalFEM_S_MBB(nelxm/2,nelym/2,halftotmat);
+[stress]=totalFEM_S(nelxm/2,nelym/2,halftotmat,problem);
 stressTotMat2=abs(stress).*halftotmat;
 meanSTM2=mean(mean(stressTotMat2));
 totalMat(repelem(stressTotMat2<meanSTM2/unusedRatio2,2,2))=0;
 
+%repeat the same process with a higher "unused" threshold 
+topleftmat= totalMat(1:2:end,1:2:end);
+toprightmat= totalMat(1:2:end,2:2:end);
+botleftmat= totalMat(2:2:end,1:2:end);
+botrightmat= totalMat(2:2:end,2:2:end);
+halftotmat=(topleftmat+toprightmat+botleftmat+botrightmat)./4;  
+[stress]=totalFEM_S(nelxm/2,nelym/2,halftotmat,problem);
+stressTotMat3=abs(stress).*halftotmat;
+meanSTM3=mean(mean(stressTotMat3));
+totalMat(repelem(stressTotMat3<meanSTM3/unusedRatio3,2,2))=0;
+
 % DENSITY FILTERING
+fprintf('Post-treatment : step 2 \n');
 % prepare filter
 iH = ones(nelxm*nelym*(2*(ceil(rmin)-1)+1)^2,1);
 jH = ones(size(iH));
@@ -167,9 +195,11 @@ H = sparse(iH,jH,sH);
 Hs = sum(H,2);
 
 totalMatF=(H*totalMat(:))./Hs; %density filtering applied here
+totalMatF(:)=totalMatF(:).*activeelts; %inactive elements are set back to 0
 totalMatF=reshape(totalMatF,nelym,nelxm);
 
 %filter densities to 0 or 1 while conserving volume fraction
+fprintf('Post-treatment : step 3 \n');
 totalMat01=totalMatF;
 lowlim=0;
 highlim=1;
@@ -189,7 +219,7 @@ end
 end
 
 
-function [stress]=totalFEM_S_MBB(nelx,nely,xPhys)
+function [stress]=totalFEM_S(nelx,nely,xPhys,problem)
 fsum=1.0;
 %% MATERIAL PROPERTIES
 E0 = 1;
@@ -216,23 +246,44 @@ iK = reshape(kron(edofMat,ones(8,1))',64*nelx*nely,1);
 jK = reshape(kron(edofMat,ones(1,8))',64*nelx*nely,1);
 
 
-% USER-DEFINED LOAD DOFs
-loadnid = 1; % Node IDs
-loaddof = 2*loadnid(:) ; % DOFs
-% USER-DEFINED SUPPORT FIXED DOFs
-fixednid_1 = 1:(nely+1); % Node IDs
-fixednid_2 = (nelx+1)*(nely+1); % Node IDs
-fixeddof = [2*fixednid_1(:)-1;2*fixednid_2(:)]; % DOFs
+switch problem
+    case 'MBB'
+    % USER-DEFINED LOAD DOFs
+    loadnid = 1; % Node IDs
+    loaddof = 2*loadnid(:) ; % DOFs
+    % USER-DEFINED SUPPORT FIXED DOFs
+    fixednid_1 = 1:(nely+1); % Node IDs
+    fixednid_2 = (nelx+1)*(nely+1); % Node IDs
+    fixeddof = [2*fixednid_1(:)-1;2*fixednid_2(:)]; % DOFs
+    % USER-DEFINED ACTIVE ELEMENTS
+    activeelts=ones(nelx*nely,1);
+    case 'Lshape'
+    % USER-DEFINED LOAD DOFs
+    loadnid = nelx*(nely+1)+nely/2+1; % Node IDs
+    loaddof = 2*loadnid(:) ; % DOFs
+    % USER-DEFINED SUPPORT FIXED DOFs
+    fixednid_1 = 1:(nely+1):(nelx/2)*(nely+1)+1; % Node IDs
+    fixednid_2 = fixednid_1; % Node IDs
+    fixeddof = [2*fixednid_1(:)-1;2*fixednid_2(:)]; % DOFs
+    % USER-DEFINED ACTIVE ELEMENTS
+    emptyelts=(nelx/2)*(nely)+1:(nelx)*(nely);
+    emptyelts=reshape(emptyelts, nely,nelx/2);
+    emptyelts=emptyelts(1:nely/2,:);
+    emptyelts=emptyelts(:);
+    activeelts=ones(nelx*nely,1);
+    activeelts(emptyelts)=0;
+end
 % PREPARE FINITE ELEMENT ANALYSIS
 nele = nelx*nely;
 ndof = 2*(nelx+1)*(nely+1);
 F = sparse(loaddof,1,-fsum,ndof,1);
 U = zeros(ndof,1);
 freedofs = setdiff(1:ndof,fixeddof,'stable');
+xPhys(:)=xPhys(:).*activeelts;
 
 sK = reshape(KE(:)*(Emin+xPhys(:)'.^penal*(E0-Emin)),64*nelx*nely,1);
 K = sparse(iK,jK,sK); K = (K+K')/2;
-tic; U(freedofs) = K(freedofs,freedofs)\F(freedofs); toc;
+U(freedofs) = K(freedofs,freedofs)\F(freedofs);
 
 stress = reshape(sqrt(sum((U(edofMat)*S).*U(edofMat),2)),nely,nelx); %microscopic Von Mises Stress
   
