@@ -37,4 +37,4 @@ Fig 16 is obtained by running the file compFelem.m
 Fig 17 is obtained by running the file compFpenal.m
 
 
-The codes needed to run the examples in part 4.2 and to create the database are still been cleaned and will be published here soon.
+The codes needed to run the examples in part 4.2 and to create the database are still being cleaned and will be published here soon.
