@@ -41,5 +41,5 @@ Fig 17 is obtained by running the file compFpenal.m
 
 The codes needed to run the examples in part 4.2 and to create the database are still being cleaned and will be published here soon.
 
-#References
+# References
 [1] Svanberg, Krister. "MMA and GCMMA, versions September 2007." Optimization and Systems Theory 104 (2007).
