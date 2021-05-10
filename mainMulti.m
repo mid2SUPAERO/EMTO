@@ -6,7 +6,7 @@ function mainMulti(nelx,nely,volfrac,initialDesign,posttreat,problem)
 %nely:   number of cells in vertical direction
 %initialDesign:   initial guess : "volfrac" for uniform density, "top88" for mono-scale optimization
 %posttreat:   0: no post-treatment (faster); 1: posttreatment(better design)
-%problem:   'MBB' or 'Lshape'
+%problem:   'MBB', 'Lshape' or 'Canti'
 
 macroTic=tic;
 [cTheor,xdens,xcos,xsin,xcub]=topMulti(nelx,nely,volfrac,initialDesign,problem); %macro-optimization
@@ -22,7 +22,6 @@ colormap(gray); imagesc(1-xPhys); caxis([0 1]); axis equal; axis off; drawnow;
 %evaluate final design
 compliance=evaluateTotalDesign(xPhys,3,problem)
 totalTime=macroTime+totdesignTime
-
 
 
 
