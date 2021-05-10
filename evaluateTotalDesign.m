@@ -31,6 +31,16 @@ switch problem
     fixeddof = [2*fixednid_1(:)-1;2*fixednid_2(:)]; % DOFs
     % USER-DEFINED ACTIVE ELEMENTS
     activeelts=ones(nelx*nely,1);
+    case 'Canti'
+    % USER-DEFINED LOAD DOFs
+    loadnid = nelx*(nely+1)+nely/2+1; % Node IDs
+    loaddof = 2*loadnid(:) ; % DOFs
+    % USER-DEFINED SUPPORT FIXED DOFs
+    fixednid_1 = 1:(nely+1); % Node IDs
+    fixednid_2 = fixednid_1; % Node IDs
+    fixeddof = [2*fixednid_1(:)-1;2*fixednid_2(:)]; % DOFs
+    % USER-DEFINED ACTIVE ELEMENTS
+    activeelts=ones(nelx*nely,1);
     case 'Lshape'
     % USER-DEFINED LOAD DOFs
     loadnid = nelx*(nely+1)+nely/2+1; % Node IDs
