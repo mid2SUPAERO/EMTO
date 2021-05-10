@@ -1,4 +1,4 @@
-function mainTop88(nelx,nely,volfrac,posttreat,problem)
+function mainTop88(nelx,nely,volfrac,posttreat,problem,evalgrid)
 %used to obtain compliance and time of top88 on the same grid as the one evaluating our
 %method
 
@@ -8,12 +8,17 @@ function mainTop88(nelx,nely,volfrac,posttreat,problem)
 %posttreat:   0 for no post-treatment, 
 %             1 for forcing element densities to 0 or 1 while conserving
 %             volume fraction
-%problem:   'MBB' or 'Lshape'
+%problem:   'MBB', 'Lshape' or 'Canti'
+%evalgrid :    'coarse' or 'finer' for the choice of the evaluation grid
 
 switch problem
     case 'MBB'
     top88Tic=tic;
     [xPhys]=top88DesignMBB(nelx,nely,volfrac,3,1.5,1); %get top88 design
+    top88Time=toc(top88Tic);
+    case 'Canti'
+    top88Tic=tic;
+    [xPhys]=top88DesignCanti(nelx,nely,volfrac,3,1.5,1); %get top88 design
     top88Time=toc(top88Tic);
     case 'Lshape'
     top88Tic=tic;
@@ -23,9 +28,7 @@ end
 
 %post-treat densities to 0 or 1
 if posttreat==1
-    if problem=='Lshape'
-        volfrac=volfrac*3/4;
-    end
+    volfrac=mean(mean(xPhys));
     xPhys01=xPhys;
     lowlim=0;
     highlim=1;
@@ -48,11 +51,25 @@ figure(6)
 colormap(gray); imagesc(1-xPhys); caxis([0 1]); axis equal; axis off; drawnow;
 
 %evaluate final design
-switch problem
-    case 'MBB'
-    microelements=3000; 
-    case 'Lshape'
-    microelements=1400; 
+switch evalgrid
+    case 'finer'
+    switch problem
+        case 'MBB'
+        microelements=6000; 
+        case 'Canti'
+        microelements=4000; 
+        case 'Lshape'
+        microelements=2800; 
+    end
+    case 'coarse'
+    switch problem
+        case 'MBB'
+        microelements=3000; 
+        case 'Canti'
+        microelements=2000; 
+        case 'Lshape'
+        microelements=1400; 
+    end
 end
 refine=round(microelements/nelx);
 xPhys=repelem(xPhys,refine,refine);%project top88 design on the same grid as the one evaluating our method
