@@ -33,6 +33,16 @@ switch problem
     fixeddof = [2*fixednid_1(:)-1;2*fixednid_2(:)]; % DOFs
     % USER-DEFINED ACTIVE ELEMENTS
     activeelts=ones(nelx*nely,1);
+    case 'Canti'
+    % USER-DEFINED LOAD DOFs
+    loadnid = nelx*(nely+1)+nely/2+1; % Node IDs
+    loaddof = 2*loadnid(:) ; % DOFs
+    % USER-DEFINED SUPPORT FIXED DOFs
+    fixednid_1 = 1:(nely+1); % Node IDs
+    fixednid_2 = fixednid_1; % Node IDs
+    fixeddof = [2*fixednid_1(:)-1;2*fixednid_2(:)]; % DOFs
+    % USER-DEFINED ACTIVE ELEMENTS
+    activeelts=ones(nelx*nely,1);
     case 'Lshape'
     % USER-DEFINED LOAD DOFs
     loadnid = nelx*(nely+1)+nely/2+1; % Node IDs
@@ -92,6 +102,8 @@ if initialDesign=="top88"
     switch problem
         case 'MBB'
         xdens = top88DesignMBB(nelx,nely,volfrac,2,1.2,2); xcos = repmat(1, [nely, nelx]); xsin = repmat(1, [nely, nelx]); xcub = repmat(0.5, [nely, nelx]);
+        case 'Canti'
+        xdens = top88DesignCanti(nelx,nely,volfrac,2,1.2,2); xcos = repmat(1, [nely, nelx]); xsin = repmat(1, [nely, nelx]); xcub = repmat(0.5, [nely, nelx]);
         case 'Lshape'
         xdens = top88DesignL(nelx,nely,volfrac/mean(activeelts),2,1.2,2); xcos = repmat(1, [nely, nelx]); xsin = repmat(1, [nely, nelx]); xcub = repmat(0.5, [nely, nelx]);
     end
@@ -186,11 +198,11 @@ while change > tolx && loop < maxloop && loopaftermin < maxloopaftermin
     figure(1)
     colormap(gray); imagesc(1-xdensPhys); caxis([0 1]); axis equal; axis off; drawnow;
     figure(2)
-    colormap(gray); imagesc(1-xcosPhys); caxis([0 1]); axis equal; axis off; drawnow;
+    colormap(gray); imagesc(1-xcosPhys.*reshape(activeelts,nely,nelx)); caxis([0 1]); axis equal; axis off; drawnow;
     figure(3)
-    colormap(gray); imagesc(1-xsinPhys); caxis([0 1]); axis equal; axis off; drawnow;
+    colormap(gray); imagesc(1-xsinPhys.*reshape(activeelts,nely,nelx)); caxis([0 1]); axis equal; axis off; drawnow;
     figure(4)
-    colormap(gray); imagesc(1-xcubPhys); caxis([0 1]); axis equal; axis off; drawnow;
+    colormap(gray); imagesc(1-xcubPhys.*reshape(activeelts,nely,nelx)); caxis([0 1]); axis equal; axis off; drawnow;
 end
 end
 
