@@ -85,20 +85,83 @@ The resulting compliance is 108.1 compared to 94.3 for our method evaluated on t
 
 # Replication of results of part 4.2:
 
-Figure 18 can be obtained through the command mainMulti(100,40,0.5,'volfrac',0,'Canti') and stopping before line 23 (to avoid the total design evaluation). Line 6 of topMulti must be changed to "rmin = 2;" first.
+To obtain figure 18, it is necessary to first change line 6 of topMulti to 
+```matlab
+rmin = 2;
+````
+The design can then be obtained through the command 
+```matlab
+mainMulti(100,40,0.5,'volfrac',0,'Canti')
+```
+It is reccomended to stop the code before line 23 (to avoid the total design evaluation).
 
-In order to run the following examples (with cells using only 4 transmission zones), it is necessary to first download the structural database on Mendeley : https://data.mendeley.com/datasets/pvwyj9hnrb/1 (database of microstructures for cells with 4 transmission zones). For these examples, it is also necessary to change lines 9-13 in totalDesign.m to "load('DB4stru1.mat')"  "load('DB4stru2.mat')"  ...   "load('DB4stru5.mat')"  and to change line 15 in topMulti to "load('4TZdatabase32-32-32.mat')"
+In order to run the following examples (with cells using only 4 transmission zones), it is necessary to first download the structural database on Mendeley : https://data.mendeley.com/datasets/pvwyj9hnrb/1 (database of microstructures for cells with 4 transmission zones). For these examples, it is also necessary to change lines 9-13 in totalDesign.m to 
+```matlab
+load('DB4stru1.mat')
+load('DB4stru2.mat')
+load('DB4stru3.mat')
+load('DB4stru4.mat')
+load('DB4stru5.mat')
+```
+and to change line 15 in topMulti to 
+```matlab
+load('4TZdatabase32-32-32.mat')
+```
 
-To obtain figure 19a, it is necessary to first change lines 8 and 9 in topMulti so that they read "xMin = 0.49" and "xMax = 0.51". Then the design can be obtained by the command mainMulti(50,20,0.5,'volfrac',0,'Canti') and stopping before line 23 (to avoid the total design evaluation).
+To obtain figure 19a, it is necessary to first change lines 8 and 9 in topMulti so that they read 
+```matlab
+xMin = 0.49
+xMax = 0.51
+```
+Then the design can be obtained by the command 
+```matlab
+mainMulti(50,20,0.5,'volfrac',0,'Canti')
+```
+It is reccomended to stop the code before line 23 (to avoid the total design evaluation).
 
-To obtain figure 19b, it is necessary to first change lines 8 and 9 in topMulti so that they read "xMin = 0" and "xMax = 0.6". Then the design can be obtained by the command mainMulti(50,20,0.5,'volfrac',0,'Canti') and stopping before line 23 (to avoid the total design evaluation).
+To obtain figure 19b, it is necessary to first change lines 8 and 9 in topMulti so that they read 
+```matlab
+xMin = 0
+xMax = 0.6
+```
+Then the design can be obtained by the command 
+```matlab
+mainMulti(50,20,0.5,'volfrac',0,'Canti')
+```
+It is reccomended to stop the code before line 23 (to avoid the total design evaluation).
 
-To obtain figure 20a, it is necessary to first change lines 118 and 119 in topMulti so that they read "xmin = [xMin*ones(nele,1); 0.99*ones(nele,1); 0.99*ones(nele,1); 0.49*ones(nele,1)];" and "xmax = [xMax*ones(nele,1); ones(nele,1); ones(nele,1); 0.51*ones(nele,1)];". Then the design can be obtained by the command mainMulti(100,40,0.5,'volfrac',0,'Canti') and stopping before line 23 (to avoid the total design evaluation). Line 6 of topMulti must be changed to "rmin = 2;" first.
+To obtain figure 20a, it is necessary to first change lines 118 and 119 in topMulti so that they read 
+```matlab
+xmin = [xMin*ones(nele,1); 0.99*ones(nele,1); 0.99*ones(nele,1); 0.49*ones(nele,1)];
+xmax = [xMax*ones(nele,1); ones(nele,1); ones(nele,1); 0.51*ones(nele,1)];
+```
+and change line 6 to
+```matlab
+rmin=2;
+```
+Then the design can be obtained by the command 
+```matlab
+mainMulti(100,40,0.5,'volfrac',0,'Canti')
+```
+It is reccomended to stop the code before line 23 (to avoid the total design evaluation).
 
-To obtain figure 20c, it is necessary to first change lines 118 and 119 in topMulti so that they read "xmin = [xMin*ones(nele,1); 0.99*ones(nele,1); 0.99*ones(nele,1); zeros(nele,1)];" and "xmax = [xMax*ones(nele,1); ones(nele,1); ones(nele,1); ones(nele,1)];". Then the design can be obtained by the command mainMulti(100,40,0.5,'volfrac',0,'Canti') and stopping before line 23 (to avoid the total design evaluation). Line 6 of topMulti must be changed to "rmin = 2;" first.
+To obtain figure 20c, it is necessary to first change lines 118 and 119 in topMulti so that they read 
+```matlab
+xmin = [xMin*ones(nele,1); 0.99*ones(nele,1); 0.99*ones(nele,1); zeros(nele,1)];
+xmax = [xMax*ones(nele,1); ones(nele,1); ones(nele,1); ones(nele,1)];
+```
+and change line 6 to
+```matlab
+rmin=2;
+```
+Then the design can be obtained by the command 
+```matlab
+mainMulti(100,40,0.5,'volfrac',0,'Canti')
+```
+It is reccomended to stop the code before line 23 (to avoid the total design evaluation).
 
-
-The codes needed to create the databases are still been cleaned and commented and will be publisher here soon.
+# Codes for creating the database
+The codes needed to create the databases are still been cleaned and commented and will be publisher here soon. However they are not necessary to run any of the results presented in the paper.
 
 # References
 [1] Svanberg, Krister. "MMA and GCMMA, versions September 2007." Optimization and Systems Theory 104 (2007).
