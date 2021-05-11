@@ -59,9 +59,29 @@ When runing these calls, the theoretical compliance are also obtained (line 4 in
 
 Those designs are compared in table 1 to:
 
-a top88 case with the same number of elements which densities are filtered to 0 or 1 ( mainTop88(14,14,0.5,1,'Lshape','coarse'), mainTop88(28,28,0.5,1,'Lshape','finer'), mainTop88(30,10,0.5,1,'MBB','coarse') and mainTop88(60,20,0.5,1,'MBB','finer') )
-
-top88 cases using the same comutational times as each of the 12 EMTO cases ( mainTop88(70,70,0.5,1,'Lshape','coarse'), mainTop88(88,88,0.5,1,'Lshape','coarse'), mainTop88(140,140,0.5,1,'Lshape','coarse'),mainTop88(122,122,0.5,1,'Lshape','finer'), mainTop88(134,134,0.5,1,'Lshape','finer'), mainTop88(280,280,0.5,1,'Lshape','finer') and mainTop88(120,40,0.5,1,'MBB','coarse'), mainTop88(150,50,0.5,1,'MBB','coarse'), mainTop88(231,77,0.5,1,'MBB','coarse'),mainTop88(120,40,0.5,1,'MBB','finer'), mainTop88(150,50,0.5,1,'MBB','finer'), mainTop88(231,77,0.5,1,'MBB','finer') respectively).
+- a top88 case with the same number of elements which densities are filtered to 0 or 1 :
+```matlab
+mainTop88(14,14,0.5,1,'Lshape','coarse')
+mainTop88(28,28,0.5,1,'Lshape','finer')
+mainTop88(30,10,0.5,1,'MBB','coarse')
+mainTop88(60,20,0.5,1,'MBB','finer')
+```
+- top88 cases using the same comutational times as each of the 12 EMTO cases :
+```matlab
+mainTop88(70,70,0.5,1,'Lshape','coarse')
+mainTop88(88,88,0.5,1,'Lshape','coarse')
+mainTop88(140,140,0.5,1,'Lshape','coarse')
+mainTop88(122,122,0.5,1,'Lshape','finer')
+mainTop88(134,134,0.5,1,'Lshape','finer')
+mainTop88(280,280,0.5,1,'Lshape','finer')
+mainTop88(120,40,0.5,1,'MBB','coarse')
+mainTop88(150,50,0.5,1,'MBB','coarse')
+mainTop88(231,77,0.5,1,'MBB','coarse')
+mainTop88(120,40,0.5,1,'MBB','finer')
+mainTop88(150,50,0.5,1,'MBB','finer')
+mainTop88(231,77,0.5,1,'MBB','finer')
+```
+respectively.
 
 Fig 16 is obtained by running the file compFelem.m
 
