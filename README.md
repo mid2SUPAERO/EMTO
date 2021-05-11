@@ -13,7 +13,6 @@ The proposed framework uses Method of Moving Asymptotes (MMA) optimization solve
 It is advised to start running the coarse grid cases, as the evaluation of the finer grid cases may take a long time to run.
 
 In order to obtain the design and compliance of the L-shape beam without post-treatment (fig 13c and line 2 in table 1), call 
-and change line 6 to
 ```matlab
 mainMulti(14,14,0.5,'top88',0,'Lshape')
 ```
