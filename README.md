@@ -34,6 +34,29 @@ Fig 16 is obtained by running the file compFelem.m
 
 Fig 17 is obtained by running the files compFpenalL.m, compFpenalMBB.m, compFpenalCanti.m (requires a long computational time)
 
+The comparison to the oriented grid method by Kumar and Suresh [2], is done by testing their code on our examples. Their code can be downloaded here : http://www.ersl.wisc.edu/software/MTO_Code.zip
+Between line 46 and 47 of MTO_example.m, we insert 
+"    case 5 %
+        probType = 5; % MBB
+        clusteringType = 3; % options: 2=density, 3=density-and-strain
+        nClusters = 12;  %  enter between 1 and 20"
+We change line 94 into "fileName = 'L_BracketEMTO.dat'"
+Between lines 104 and 105 we insert 
+"    case 5
+        fileName = 'MBBbeam_EMTO.dat'; %ED
+        volFrac = 0.5;
+        zoom = 33;"
+Between lines 489 and 490, we insert
+"    elseif pblm == 5
+        F = sparse(2,1,-1000,2*(nely+1)*(nelx+1),1);
+        fixeddofs = [1:2:2*(nely+1),2*(nely+1)*nelx+2];
+        xPhys((nely)*(nelx)-(nely/2)+(-80:80)) = 1;"
+
+
+The tic (inserted befor the first line) and toc (inserted between line 420 and 421) matlab functions can be used to measure the computation time of this method.
+To evaluated the MBB design using this method, we change the first line into "MTO_example1(5);" then run the code, then retrieve the design (variable "pixelImageData" leading to figure 15f in our article), then evaluate it using our functions : command "evaluateTotalDesign(flipud(1-pixelImageData),3,'MBB')". The resulting compliance is 316.9 compared to 203.8 for our method evaluated on the same grid (3000x1000).
+To evaluated the Lshaped design, we change the first line into "MTO_example1(2);" and replace 40 by 100 in lines 222, 223, 398 (to have the same grid as in our case) then run the code, then retrieve the design (variable "pixelImageData" leading to figure 14f in our article), then evaluate it using our functions : command "evaluateTotalDesign(flipud(1-pixelImageData),3,'Lshaped')". The resulting compliance is 108.1 compared to 94.3 for our method evaluated on the same grid (1400x1400).
+
 
 # Replication of results of part 4.2:
 
@@ -54,3 +77,4 @@ The codes needed to create the databases are still been cleaned and commented an
 
 # References
 [1] Svanberg, Krister. "MMA and GCMMA, versions September 2007." Optimization and Systems Theory 104 (2007).
+[2] Kumar T, Suresh K.  A density-and-strain-based K-clustering approach to microstructuraltopology optimization. Structural and Multidisci-plinary Optimization (2020)   
