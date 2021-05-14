@@ -88,7 +88,7 @@ Fig 16 is obtained by running the file compFelem.m
 Fig 17 is obtained by running the files compFpenalL.m, compFpenalMBB.m, compFpenalCanti.m (requires a long computational time)
 The hard-coded values for the multi-scale and top88 with threshold designs come from table 1, or in the cantilever case, from the calls:
 ```matlab
-mainMulti(40,20,0.5,'top88',1,'MBBCanti')
+mainMulti(40,20,0.5,'top88',1,'Canti')
 mainTop88(40,20,0.5,1,'Canti','finer')
 ```
 
