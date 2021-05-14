@@ -42,7 +42,7 @@ for the coarse grid and
 ```matlab
 mainMulti(60,20,0.5,'top88',0,'MBB')
 ```
-for the finer grid.
+for the finer grid. (mainMulti(60,20,0.5,'volfrac',0,'MBB') leads to a better design)
 
 In order to obtain the design and compliance of the MBB beam with post-treatment (fig 15a and line 6 in table 1), call 
 ```matlab
