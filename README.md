@@ -86,6 +86,11 @@ respectively.
 Fig 16 is obtained by running the file compFelem.m
 
 Fig 17 is obtained by running the files compFpenalL.m, compFpenalMBB.m, compFpenalCanti.m (requires a long computational time)
+The hard-codded values for the multi-scale and top88 with threshold designs come from table 1, or in the cantilever case, from the calls:
+```matlab
+mainMulti(40,20,0.5,'top88',1,'MBBCanti')
+mainTop88(40,20,0.5,1,'Canti','finer')
+```
 
 ## Replication of comparison to oriented-grid method ([2])
 The comparison to the oriented grid method by Kumar and Suresh [2], is done by testing their code on our examples. Their code can be downloaded here : http://www.ersl.wisc.edu/software/MTO_Code.zip
