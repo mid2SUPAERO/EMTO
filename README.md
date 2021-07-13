@@ -83,7 +83,19 @@ mainTop88(231,77,0.5,1,'MBB','finer')
 ```
 respectively.
 
-In order to obtain the results in table 1 using 4 transmition zones (TZ), the same calls can be made, after having implemented the changes in XXX
+In order to obtain the results in table 1 using 4 transmition zones (TZ), the same calls can be made, after having implemented the following changes :
+change lines 9-13 in totalDesign.m to 
+```matlab
+load('DB4stru1.mat')
+load('DB4stru2.mat')
+load('DB4stru3.mat')
+load('DB4stru4.mat')
+load('DB4stru5.mat')
+```
+and change line 15 in topMulti to 
+```matlab
+load('4TZdatabase32-32-32.mat')
+```
 
 
 Fig 16 is obtained by running the file compFelem.m
@@ -157,7 +169,7 @@ mainMulti(100,40,0.5,'volfrac',0,'Canti')
 It is reccomended to stop the code before line 23 (to avoid the total design evaluation).
 
 ## Results with cells using 4 transmission zones
-In order to run the following examples (with cells using only 4 transmission zones), it is necessary to first download the structural database on Mendeley : https://data.mendeley.com/datasets/pvwyj9hnrb/2 (database of microstructures for cells with 4 transmission zones). For these examples, it is also necessary to change lines 9-13 in totalDesign.m to 
+In order to run the following examples (with cells using only 4 transmission zones), it is necessary to change lines 9-13 in totalDesign.m to 
 ```matlab
 load('DB4stru1.mat')
 load('DB4stru2.mat')
