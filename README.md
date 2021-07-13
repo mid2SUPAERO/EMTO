@@ -98,6 +98,13 @@ load('4TZdatabase32-32-32.mat')
 ```
 
 
+Fig 13 is obtained by storing the compliance during call
+```matlab
+mainMulti(14,14,0.5,'top88',0,'Lshape')
+```
+and then plotting it.
+
+
 Fig 16 is obtained by running the file compFelem.m
 
 Fig 17 is obtained by running the files compFpenalL.m, compFpenalMBB.m, compFpenalCanti.m (requires a long computational time)
