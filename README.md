@@ -3,7 +3,7 @@ Efficient Multiscale Topology Optimization
 
 This repository will contain all the code needed to reproduce the results presented in submited paper titled "A well connected, locally-oriented and efficient multi-scaletopology optimization strategy (EMTO)"
 
-In order to run the code, it is necessary to first download the structural database on Mendeley : http://dx.doi.org/10.17632/b5hyzxg7fv.1 (database of microstructures for cells with 8 transmission zones).
+In order to run the code, it is necessary to first download the two structural databases on Mendeley : http://dx.doi.org/10.17632/b5hyzxg7fv.1 (database of microstructures for cells with 8 transmission zones), and https://data.mendeley.com/datasets/pvwyj9hnrb/2 (database of microstructures for cells with 4 transmission zones).
 
 The proposed framework uses Method of Moving Asymptotes (MMA) optimization solvers [1]. The associated MMA codes can also be downloaded from http://www.smoptit.se. 
 
