@@ -12,49 +12,49 @@ The proposed framework uses Method of Moving Asymptotes (MMA) optimization solve
 ## Replication of figures and table
 It is advised to start running the coarse grid cases, as the evaluation of the finer grid cases may take a long time to run.
 
-In order to obtain the design and compliance of the L-shape beam without post-treatment (fig 13c and line 2 in table 1), call 
+In order to obtain the design and compliance of the L-shape beam without post-processing, call 
 ```matlab
 mainMulti(14,14,0.5,'top88',0,'Lshape')
 ```
-for the coarse grid and 
+for the coarse grid (fig 12c and line 4 in table 1) and 
 ```matlab
 mainMulti(28,28,0.5,'top88',0,'Lshape')
 ```
-for the finer grid.
+for the finer grid (line 11 in table 1).
 
-In order to obtain the design and compliance of the L-shape beam with post-treatment (fig 13d and 14a and line 3 in table 1), call 
+In order to obtain the design and compliance of the L-shape beam with post-processing, call 
 ```matlab
 mainMulti(14,14,0.5,'top88',1,'Lshape')
 ```
-for the coarse grid and 
+for the coarse grid (fig 12d and 14a and line 6 in table 1) and 
 ```matlab
 mainMulti(28,28,0.5,'top88',1,'Lshape')
 ```
-for the finer grid.
+for the finer grid (fig 14b and line 13 in table 1).
 
-When runing these calls, the plots of fig 13b are also obtained, as well as the theoretical compliance (line 1 in table 1)
+When runing these calls, the plots of fig 12b are also obtained, as well as the theoretical compliances (line 2 and 9 in table 1)
 
-In order to obtain the design and compliance of the MBB beam without post-treatment (line 5 in table 1), call 
+In order to obtain the design and compliance of the MBB beam without post-treatment, call 
 ```matlab
 mainMulti(30,10,0.5,'top88',0,'MBB')
 ```
-for the coarse grid and 
+for the coarse grid (line 18 in table 1) and 
 ```matlab
 mainMulti(60,20,0.5,'top88',0,'MBB')
 ```
-for the finer grid. (mainMulti(60,20,0.5,'volfrac',0,'MBB') leads to a better design)
+for the finer grid (line 25 in table 1). (mainMulti(60,20,0.5,'volfrac',0,'MBB') leads to a better design)
 
-In order to obtain the design and compliance of the MBB beam with post-treatment (fig 15a and line 6 in table 1), call 
+In order to obtain the design and compliance of the MBB beam with post-treatment, call 
 ```matlab
 mainMulti(30,10,0.5,'top88',1,'MBB')
 ```
-for the coarse grid and 
+for the coarse grid (fig 15a and line 20 in table 1) and 
 ```matlab
 mainMulti(60,20,0.5,'top88',1,'MBB')
 ```
-for the finer grid.
+for the finer grid (fig 15b and line 27 in table 1).
 
-When runing these calls, the theoretical compliance are also obtained (line 4 in table 1).
+When runing these calls, the theoretical compliances are also obtained (line 16 and 23 in table 1).
 
 
 Those designs are compared in table 1 to:
@@ -82,6 +82,9 @@ mainTop88(150,50,0.5,1,'MBB','finer')
 mainTop88(231,77,0.5,1,'MBB','finer')
 ```
 respectively.
+
+In order to obtain the results in table 1 using 4 transmition zones (TZ), the same calls can be made, after having implemented the changes in XXX
+
 
 Fig 16 is obtained by running the file compFelem.m
 
