@@ -32,9 +32,9 @@
 % end
 
 for k=1:1
-    locfilename=['databaseGridNoNoise',num2str(k),'.txt'];
-    locfilename2=['objGridNoNoise',num2str(k),'.txt'];
-    locfilename3=['struGridNoNoise',num2str(k),'.txt'];
+    locfilename=['databaseGridNoNoisetot.txt'];
+    locfilename2=['objGridNoNoisetot.txt'];
+    locfilename3=['struGridNoNoisetot.txt'];
     fileID=fopen(locfilename,'w');
     fileID2=fopen(locfilename2,'w');
     fileID3=fopen(locfilename3,'w');
