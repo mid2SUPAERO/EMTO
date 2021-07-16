@@ -31,14 +31,14 @@
 %     fprintf(locfileID3,'%14.10f ',Sopt);
 % end
 
-for k=1:2
+for k=1:1
     locfilename=['databaseGridNoNoise',num2str(k),'.txt'];
     locfilename2=['objGridNoNoise',num2str(k),'.txt'];
     locfilename3=['struGridNoNoise',num2str(k),'.txt'];
     fileID=fopen(locfilename,'w');
     fileID2=fopen(locfilename2,'w');
     fileID3=fopen(locfilename3,'w');
-    for i=1+6554*(k-1):min(6554*k,32^3)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    for i=1:32^3
     %for i=1:size(LHpoints,2)
     %for i=14500:14500
         pointfilename=['point',num2str(i)];
