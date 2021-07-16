@@ -243,7 +243,8 @@ It is reccomended to stop the code before line 23 (to avoid the total design eva
 
 # Codes for creating the database
 The codes needed to create the databases are in the subfolder /codeForDatabase . Running code generateDataFromGrid.m will create roughly 3\*32000  text files (3 per optimized cell). It is recomended to run this code in parallel (27 nodes with 24 cores each were used during 24h to generate the database on our supercomputer).
-Running code concatenateDataFromGrid.m will then assemble these 3\*32000 files in only three text files containing all the data needed for the database.
+Running code concatenateDataFromGrid.m will then assemble these 3\*32000 files in bigger text files containing all the data needed for the database.
+Finally run databaseAsMAt.m to obtain the tensor database in the tensor form that is used in the macroscale optimization (topEMTO.m) and struDB.m to optain the micro-structure database that is used after the macroscale optimization to assemble the total design.
 
 # References
 [1] Svanberg, Krister. "MMA and GCMMA, versions September 2007." Optimization and Systems Theory 104 (2007).
