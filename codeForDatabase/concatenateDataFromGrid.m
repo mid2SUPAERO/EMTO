@@ -31,22 +31,30 @@
 %     fprintf(locfileID3,'%14.10f ',Sopt);
 % end
 
-for k=1:1
-    locfilename=['databaseGridNoNoisetot.txt'];
-    locfilename2=['objGridNoNoisetot.txt'];
-    locfilename3=['struGridNoNoisetot.txt'];
-    fileID=fopen(locfilename,'w');
-    fileID2=fopen(locfilename2,'w');
-    fileID3=fopen(locfilename3,'w');
-    for i=1:32^3
+locfilename=['databaseGridNoNoisetot.txt'];
+locfilename2=['objGridNoNoisetot.txt'];
+fileID=fopen(locfilename,'w');
+fileID2=fopen(locfilename2,'w');
+for i=1:32^3
     %for i=1:size(LHpoints,2)
     %for i=14500:14500
-        pointfilename=['point',num2str(i)];
-        pointfileID=fopen(pointfilename);
-        pointdata = fscanf(pointfileID,'%f %f %f %f %f %f %f %f %f',[9 inf]);
-        pointobjfilename=['objpoint',num2str(i)];
-        pointobjfileID=fopen(pointobjfilename);
-        pointobjdata = fscanf(pointobjfileID,'%f %f %f %f %f %f %f %f %f',[45 inf]);
+    pointfilename=['point',num2str(i)];
+    pointfileID=fopen(pointfilename);
+    pointdata = fscanf(pointfileID,'%f %f %f %f %f %f %f %f %f',[9 inf]);
+    pointobjfilename=['objpoint',num2str(i)];
+    pointobjfileID=fopen(pointobjfilename);
+    pointobjdata = fscanf(pointobjfileID,'%f %f %f %f %f %f %f %f %f',[45 inf]);
+    fprintf(fileID,'%14.10f',pointdata')
+    fprintf(fileID,'\n')
+    fprintf(fileID2,'%14.10f',pointobjdata')
+    fprintf(fileID2,'\n')
+end
+for k=1:5
+    locfilename3=['struGridNoNoise',num2str(k),'.txt'];
+    fileID3=fopen(locfilename3,'w');
+    for i=1+6554*(k-1):min(6554*k,32^3)
+    %for i=1:size(LHpoints,2)
+    %for i=14500:14500
         pointstrufilename=['strupoint',num2str(i)];
         pointstrufileID=fopen(pointstrufilename);
         pointstrudata = fscanf(pointstrufileID,'%f',[10003 inf]);
