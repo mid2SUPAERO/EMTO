@@ -242,7 +242,8 @@ mainMulti(100,40,0.5,'volfrac',0,'Canti')
 It is reccomended to stop the code before line 23 (to avoid the total design evaluation).
 
 # Codes for creating the database
-The codes needed to create the databases are still been cleaned and commented and will be publisher here soon. However they are not necessary to run any of the results presented in the paper.
+The codes needed to create the databases are in the subfolder /database . Running code generateDataFromGrid.m will create roughly 3\*32000  text files (3 per optimized cell). It is recomended to run this code in parallel (27 nodes with 24 cores each were used during 24h to generate the database on our supercomputer).
+Running code concatenateDataFromGrid.m will then assemble these 3\*32000 files in only three text files containing all the data needed for the database.
 
 # References
 [1] Svanberg, Krister. "MMA and GCMMA, versions September 2007." Optimization and Systems Theory 104 (2007).
