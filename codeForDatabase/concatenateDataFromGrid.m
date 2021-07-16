@@ -58,10 +58,6 @@ for k=1:5
         pointstrufilename=['strupoint',num2str(i)];
         pointstrufileID=fopen(pointstrufilename);
         pointstrudata = fscanf(pointstrufileID,'%f',[10003 inf]);
-        fprintf(fileID,'%14.10f',pointdata')
-        fprintf(fileID,'\n')
-        fprintf(fileID2,'%14.10f',pointobjdata')
-        fprintf(fileID2,'\n')
         fprintf(fileID3,'%14.10f',pointstrudata')
         fprintf(fileID3,'\n')
     end
