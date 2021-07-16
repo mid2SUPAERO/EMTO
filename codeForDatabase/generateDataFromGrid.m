@@ -1,10 +1,11 @@
-parpool('local',24)%%%%%%%%%%%%%%%%%%%%%%%%%%
-jobnum=jojo;
+%parpool('local',24)%%%%%%%%%%%%%%%%%%%%%%%%%%
+%jobnum=jojo;
 LHid=fopen('gridNoNoise.txt');
 LHpoints = fscanf(LHid,'%f %f %f',[3 inf]);
 fclose('all')
 initDes=1:42;
-parfor j=1+(jobnum-1)*1214:min(1214*jobnum,32^3)
+parfor j=1:32^3
+%parfor j=1+(jobnum-1)*1214:min(1214*jobnum,32^3)
 %for j=14500:14500%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     j
     locfilename=['point',num2str(j)];
