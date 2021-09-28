@@ -3,7 +3,12 @@ Efficient Multiscale Topology Optimization
 
 This repository contains all the code needed to reproduce the results presented in submited paper titled "A well connected, locally-oriented and efficient multi-scale topology optimization strategy (EMTO)" : https://rdcu.be/cu6Lw
 
-please cite us
+If you happen to find EMTO useful for your research, it will be appreciated if you cite us with:
+
+
+Duriez, E., Morlier, J., Charlotte, M., & Azzaro-Pantel, C. (2021). A well connected, locally-oriented and efficient multi-scale topology optimization (EMTO) strategy. Structural and Multidisciplinary Optimization, 1-24.
+
+or 
 
 @article{duriez2021well,
   title={A well connected, locally-oriented and efficient multi-scale topology optimization (EMTO) strategy},
