@@ -3,6 +3,17 @@ Efficient Multiscale Topology Optimization
 
 This repository contains all the code needed to reproduce the results presented in submited paper titled "A well connected, locally-oriented and efficient multi-scale topology optimization strategy (EMTO)" : https://rdcu.be/cu6Lw
 
+please cite us
+
+@article{duriez2021well,
+  title={A well connected, locally-oriented and efficient multi-scale topology optimization (EMTO) strategy},
+  author={Duriez, Edouard and Morlier, Joseph and Charlotte, Miguel and Azzaro-Pantel, Catherine},
+  journal={Structural and Multidisciplinary Optimization},
+  pages={1--24},
+  year={2021},
+  publisher={Springer}
+}
+
 For question/suggestions, contact : edouard.duriez@isae-supaero.fr
 
 In order to run the code, it is necessary to first download the two structural databases on Mendeley : http://dx.doi.org/10.17632/b5hyzxg7fv.1 (database of microstructures for cells with 8 transmission zones), and https://data.mendeley.com/datasets/pvwyj9hnrb/2 (database of microstructures for cells with 4 transmission zones).
