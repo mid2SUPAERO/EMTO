@@ -1,1 +1,7 @@
 Code to apply a buckling mitigation post-treatment step
+
+To run, it is necessary to first retrieve the file database32-32-32.mat from the EMTO general folder. It is also necessary to download the micro-structure database, as explained in the EMTO readme
+
+Once this is done, on can simply type the command 
+mainMultiAddCross(20,10,0.5,'top88',1,'MBB',500,0.2)
+to obtain the results presented in the article.
