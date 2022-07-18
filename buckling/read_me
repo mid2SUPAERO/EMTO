@@ -8,7 +8,7 @@ to obtain the results presented in the article.
 
 The design can be saved using the command save('xPhys','xPhys').
 
-writePolynomMiddleLighter.m can then be used to write the dfx file.
+writePolygonMiddleLighter.m can then be used to write the dfx file.
 
 
 The proposed framework uses Method of Moving Asymptotes (MMA) optimization solvers [1]. The associated MMA codes can also be downloaded from http://www.smoptit.se.
