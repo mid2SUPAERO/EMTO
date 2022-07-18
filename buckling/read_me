@@ -1,7 +1,17 @@
 Code to apply a buckling mitigation post-treatment step
 
-To run, it is necessary to first retrieve the file database32-32-32.mat from the EMTO general folder. It is also necessary to download the micro-structure database, as explained in the EMTO readme
+To run this code, it is necessary to first retrieve the file database32-32-32.mat from the EMTO general folder. It is also necessary to download the micro-structure database, as explained in the EMTO readme
 
 Once this is done, on can simply type the command 
-mainMultiAddCross(20,10,0.5,'top88',1,'MBB',500,0.2)
+xPhys=mainMultiAddCross(20,10,0.5,'top88',1,'MBB',500,0.2)
 to obtain the results presented in the article.
+
+The design can be saved using the command save('xPhys','xPhys').
+
+writePolynomMiddleLighter.m can then be used to write the dfx file.
+
+
+The proposed framework uses Method of Moving Asymptotes (MMA) optimization solvers [1]. The associated MMA codes can also be downloaded from http://www.smoptit.se.
+The proposed framework also uses the dfxlib by Grzegorz Kwiatek to create dfx files, and lines of code provided by Ferrari (DOI https://doi.org/10.1007/s00158-021-02854-x). 
+This code itself used the external function "fsparse" that is part of the "Fast" package by Stefan Engblom. The package can be downloaded here:
+https://github.com/stefanengblom/stenglib
